@@ -2,74 +2,114 @@
 
 > **BuildSprint · Round 2 — CLI-Driven AI Chat Execution for Complex Tasks**
 
-![Sift desktop research studio](screenshots/01-studio-desktop.png)
+<div align="center">
 
-Sift Orbit is a full-stack web application that turns a natural-language instruction into a real, auditable website research report. You type something like:
+![Sift Orbit](screenshots/07-orbit-redesign.png)
+
+### [🌐 Live Demo](https://siftorbit-workelate.netlify.app) &nbsp;·&nbsp; [📁 Demo Video & Assets](https://drive.google.com/drive/folders/1m0YSllHjryn6kheZi90NYskcJnoqwGFS) &nbsp;·&nbsp; [💻 GitHub](https://github.com/ammureddie49-lab/sift)
+
+</div>
+
+---
+
+Sift Orbit turns a natural-language instruction into a real, auditable website research report. Type something like:
 
 > *"Crawl https://example.com, extract the important information, give me a summary, and return the extracted data in JSON format."*
 
-The FastAPI backend validates the request, launches a **separate Python CLI process** (`python -m app.crawler`) with an allow-listed set of arguments, captures its live JSONL stdout, waits for the exit code, validates the JSON artifact, and returns a verifiable research report to the chat UI — with every step visible in the **CLI Trace** tab.
+The FastAPI backend validates the request, launches a **separate Python CLI subprocess** (`python -m app.crawler`) with an allow-listed argument set, captures live JSONL stdout progress, waits for the process exit code, validates the JSON artifact, and returns a verifiable research report — with every step visible in the **CLI Trace** tab.
 
-**No API key is required.** The core crawl and summary are deterministic. An OpenAI-compatible LLM is optional and only used for follow-up Q&A.
+**No API key required.** The core crawl, extraction, and summary are entirely deterministic. An OpenAI-compatible LLM is optional and only used for grounded follow-up Q&A.
 
 ---
 
 ## Table of Contents
 
-1. [Prerequisites](#1-prerequisites)
-2. [Installation](#2-installation)
-3. [Environment Variables](#3-environment-variables)
-4. [Running the Application](#4-running-the-application)
-5. [The CLI Tool — `app.crawler`](#5-the-cli-tool--appcrawler)
-6. [Running the Tests](#6-running-the-tests)
-7. [Live Demo / Access Instructions](#7-live-demo--access-instructions)
-8. [Project Structure](#8-project-structure)
-9. [Architecture Overview](#9-architecture-overview)
-10. [Security Notes](#10-security-notes)
+1. [Live Demo & Assets](#1-live-demo--assets)
+2. [Screenshots](#2-screenshots)
+3. [Prerequisites](#3-prerequisites)
+4. [Installation](#4-installation)
+5. [Environment Variables](#5-environment-variables)
+6. [Running the Application](#6-running-the-application)
+7. [The CLI Tool — `app.crawler`](#7-the-cli-tool--appcrawler)
+8. [Running the Tests](#8-running-the-tests)
+9. [3D Crawl Atlas](#9-3d-crawl-atlas)
+10. [Project Structure](#10-project-structure)
+11. [Architecture Overview](#11-architecture-overview)
+12. [Security Notes](#12-security-notes)
 
 ---
 
-## 1. Prerequisites
+## 1. Live Demo & Assets
+
+| Resource | Link |
+|---|---|
+| 🌐 **Live deployment** | [https://siftorbit-workelate.netlify.app](https://siftorbit-workelate.netlify.app) |
+| 📁 **Demo video, walkthrough & assets** | [Google Drive folder](https://drive.google.com/drive/folders/1m0YSllHjryn6kheZi90NYskcJnoqwGFS) |
+| 💻 **GitHub repository** | [https://github.com/ammureddie49-lab/sift](https://github.com/ammureddie49-lab/sift) |
+
+> The live deployment serves the full frontend UI. For complete CLI execution (real subprocess crawling, JSON artifact generation, live stdout events) run the FastAPI backend locally — instructions in [Section 6](#6-running-the-application).
+
+---
+
+## 2. Screenshots
+
+### Orbit Studio & Plan Approval
+
+| Orbit UI | Plan approval |
+|---|---|
+| ![Orbit redesign](screenshots/07-orbit-redesign.png) | ![Plan approval](screenshots/08-plan-approval.png) |
+
+### Completed Research & Extraction Studio
+
+| Completed research | Extraction studio |
+|---|---|
+| ![Completed research](screenshots/09-completed-research.png) | ![Extraction studio](screenshots/11-extraction-studio.png) |
+
+### 3D Crawl Atlas
+
+![3D Crawl Atlas](screenshots/10-3d-atlas.png)
+
+> Every node is a **real fetched page**. Every edge is an **actual internal hyperlink** discovered during the crawl. Drag to orbit, scroll to zoom, click a node to inspect its page data. See [Section 9](#9-3d-crawl-atlas) for full details.
+
+### CLI Replay & Mobile
+
+| CLI Replay | Mobile |
+|---|---|
+| ![CLI Replay](screenshots/12-cli-replay.png) | ![Mobile orbit](screenshots/13-mobile-orbit.png) |
+
+---
+
+## 3. Prerequisites
 
 | Requirement | Version | Notes |
 |---|---|---|
 | **Python** | 3.11 or newer | `python --version` to check |
 | **pip** | bundled with Python | used inside the venv |
-| **Internet access** | — | for the initial `pip install` and for crawling public sites |
+| **Internet access** | — | for `pip install` and crawling public sites |
 | **Node.js / npm** | ❌ not needed | frontend is plain HTML/CSS/JS |
 
 ---
 
-## 2. Installation
-
-Clone (or extract) the project, then create a virtual environment and install dependencies.
+## 4. Installation
 
 ### Windows (PowerShell)
 
 ```powershell
-# 1. Enter the project directory
 cd path\to\Sift_Orbit
 
-# 2. Create a virtual environment
 py -3 -m venv .venv
-
-# 3. Install runtime dependencies
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-> If `py -3` is not found, use `python -m venv .venv` instead. Make sure the Python on your PATH is 3.11+.
+> If `py -3` is not found, use `python -m venv .venv`. Make sure the Python on your PATH is 3.11+.
 
 ### macOS / Linux
 
 ```bash
-# 1. Enter the project directory
 cd path/to/Sift_Orbit
 
-# 2. Create a virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
-
-# 3. Install runtime dependencies
 pip install -r requirements.txt
 ```
 
@@ -77,14 +117,14 @@ pip install -r requirements.txt
 
 | Platform | Command |
 |---|---|
-| Windows PowerShell | `powershell -ExecutionPolicy Bypass -File .\start.ps1` |
+| Windows | `powershell -ExecutionPolicy Bypass -File .\start.ps1` |
 | macOS / Linux | `./start.sh` |
 
 Both scripts create the venv if absent, install dependencies, and start the server.
 
 ---
 
-## 3. Environment Variables
+## 5. Environment Variables
 
 Copy the example file and edit it:
 
@@ -98,19 +138,17 @@ cp .env.example .env
 
 | Variable | Default | Required | Description |
 |---|---|---|---|
-| `LLM_API_KEY` | *(empty)* | **No** | OpenAI-compatible API key. Leave blank to use built-in deterministic evidence search. |
-| `LLM_BASE_URL` | `https://api.openai.com/v1` | No | Base URL for the LLM API (any OpenAI-compatible endpoint). |
-| `LLM_MODEL` | `gpt-4.1-mini` | No | Model name passed to the LLM API. |
-| `ALLOW_PRIVATE_NETWORK` | `false` | No | Set to `true` **only** for local testing against `127.0.0.1`. Never enable on a public server. |
-| `MAX_CONCURRENT_JOBS` | `2` | No | Maximum number of simultaneous background crawler jobs (1–5). |
+| `LLM_API_KEY` | *(empty)* | **No** | OpenAI-compatible API key. Leave blank — the app runs fully without one. |
+| `LLM_BASE_URL` | `https://api.openai.com/v1` | No | Base URL for any OpenAI-compatible endpoint. |
+| `LLM_MODEL` | `gpt-4.1-mini` | No | Model name sent to the API. |
+| `ALLOW_PRIVATE_NETWORK` | `false` | No | Set `true` **only** for local testing against `127.0.0.1`. Never enable on a public server. |
+| `MAX_CONCURRENT_JOBS` | `2` | No | Max simultaneous crawler jobs (1–5). |
 
-**The application runs fully without an API key.** All crawling, extraction, summarization, and JSON output are deterministic and require no external service.
-
-> ⚠️ Never commit `.env` or real API keys to version control. `.env` is already in `.gitignore`.
+> ⚠️ Never commit `.env` or real API keys. `.env` is already in `.gitignore`.
 
 ---
 
-## 4. Running the Application
+## 6. Running the Application
 
 ### Standard start
 
@@ -124,13 +162,13 @@ cp .env.example .env
 python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-Then open **http://127.0.0.1:8000** in your browser. You should see a green **System ready** indicator.
+Open **http://127.0.0.1:8000** — you should see the green **Engine Ready** indicator. Press `Ctrl+C` to stop.
 
-Press `Ctrl+C` to stop.
+---
 
 ### Local demo with the bundled test site
 
-The repo includes a four-page static demo site (`demo_site/`) so you can run a fully reproducible crawl without depending on a public URL.
+The repo includes a four-page static site (`demo_site/`) so you can run a fully reproducible crawl with no dependency on any public URL.
 
 Open **two terminals** in the project directory:
 
@@ -162,16 +200,16 @@ Crawl http://127.0.0.1:8765, summarize the website,
 extract the important information and give me valid JSON.
 ```
 
-**Expected result:** Sift fetches all four local pages via real HTTP, emits live progress events, writes a JSON artifact to `data/results/`, and the UI displays an overview, source pages, the JSON artifact, a page-quality audit, the intent plan, and the full CLI trace.
+**Expected result:** Sift fetches all four local pages over real HTTP, emits live progress events, writes a JSON artifact to `data/results/`, and the UI shows an overview, source pages, structured JSON, page-quality audit, intent plan, **3D Crawl Atlas**, and full CLI trace.
 
 ---
 
-## 5. The CLI Tool — `app.crawler`
+## 7. The CLI Tool — `app.crawler`
 
-The CLI module is the execution engine. The FastAPI backend launches it as a subprocess with a fixed, allow-listed argument set. You can also run it directly:
+The crawler is a standalone Python module — the execution engine. The FastAPI backend launches it as a subprocess with a fixed, allow-listed argument set. You can also invoke it directly:
 
 ```powershell
-# Windows — direct CLI invocation
+# Windows
 .\.venv\Scripts\python.exe -m app.crawler `
   --url https://example.com `
   --max-pages 3 `
@@ -197,25 +235,23 @@ python -m app.crawler \
 | `--url` | Target website URL (HTTP/HTTPS) | required |
 | `--max-pages` | Maximum pages to crawl (1–15) | `6` |
 | `--max-depth` | Maximum link-follow depth | `2` |
-| `--timeout` | Per-page HTTP request timeout in seconds | `12` |
-| `--fields-json` | JSON array of extraction fields | auto |
+| `--timeout` | Per-page HTTP timeout in seconds | `12` |
+| `--fields-json` | JSON array of extraction field keys | auto |
 | `--output` | Path for the JSON result artifact | required |
 
-### CLI output format
+### Output format
 
-The crawler emits newline-delimited JSON (JSONL) progress events to **stdout**:
+The crawler emits newline-delimited JSON (JSONL) progress events on **stdout**:
 
 ```json
 {"event": "progress", "step": "fetch", "url": "https://example.com", "progress": 20, "message": "Fetched page 1"}
 ```
 
-On completion it writes a validated JSON artifact to the `--output` path and exits with code `0` (success) or non-zero (failure/partial).
+On completion it writes a validated JSON artifact to `--output` and exits `0` (success) or non-zero (failure/partial).
 
 ---
 
-## 6. Running the Tests
-
-Install development dependencies first:
+## 8. Running the Tests
 
 ```powershell
 # Windows
@@ -231,69 +267,74 @@ pytest -q
 
 The test suite covers:
 
-- URL security and normalization (`test_security.py`)
-- Extractive analysis and summaries (`test_analysis.py`)
-- FastAPI session and task endpoints (`test_api.py`)
-- Real subprocess execution and artifact validation (`test_orchestration.py`)
-- End-to-end crawl → JSON artifact (`test_end_to_end.py`)
-- Orbit/3D feature endpoints (`test_orbit_features.py`)
-- Windows subprocess compatibility (`test_windows_subprocess.py`)
+| File | What it tests |
+|---|---|
+| `test_security.py` | URL validation, SSRF protection, normalization |
+| `test_analysis.py` | Extractive summaries and keyword extraction |
+| `test_api.py` | FastAPI session and task endpoints |
+| `test_orchestration.py` | Real subprocess execution and artifact validation |
+| `test_end_to_end.py` | Full crawl → JSON artifact pipeline |
+| `test_orbit_features.py` | 3D atlas graph endpoints, compare, evidence lens |
+| `test_windows_subprocess.py` | Windows subprocess and event-loop compatibility |
 
-The integration tests spin up their own temporary HTTP server and enable loopback access only for the duration of that test.
+Integration tests spin up their own temporary HTTP server and enable loopback only for the duration of that test.
 
 ---
 
-## 7. Live Demo / Access Instructions
+## 9. 3D Crawl Atlas
 
-### Deployed URL
+![3D Crawl Atlas](screenshots/10-3d-atlas.png)
 
-This project runs locally — no always-on public deployment is provided. Follow the steps below to reproduce the demo in under 3 minutes.
+The **3D Crawl Atlas** is an interactive network graph built entirely from the real data returned by each crawl. It is not a decoration — every element maps directly to the CLI output.
 
-### Fastest reproduction path
-
-```powershell
-# 1. Clone / extract the project
-# 2. Run the guided start script (creates venv, installs deps, starts server)
-powershell -ExecutionPolicy Bypass -File .\start.ps1
-```
-
-Then open **http://127.0.0.1:8000** and paste:
-
-```
-Crawl https://example.com, extract the important information,
-give me a summary, and return the extracted data in JSON format.
-```
-
-For a **fully self-contained demo** (no public internet dependency), use the two-terminal setup in [Section 4](#local-demo-with-the-bundled-test-site) with the bundled `demo_site/`.
-
-### What to look for
-
-| Tab | What it shows |
+| Element | What it represents |
 |---|---|
-| **Overview** | Extractive summary and key topics from actual fetched pages |
-| **Sources** | Each crawled URL, headings, and outbound links |
-| **JSON** | Pretty-printed, downloadable structured artifact |
-| **Quality** | Per-page heuristic checks (title, meta description, H1, lang) |
-| **Plan** | The constrained intent plan the system built before executing |
-| **Trace** | The exact CLI command, every JSONL stdout event, stderr, and exit code |
+| **Green node** | A page that was successfully crawled |
+| **Purple node** | A URL discovered via a hyperlink but not crawled (depth/page limit) |
+| **Red node** | A page that returned an error or was blocked |
+| **Edge (line)** | An actual internal hyperlink found in the page HTML |
 
-### Screenshots
+### Interactions
 
-| | |
+| Action | Effect |
 |---|---|
-| ![Studio desktop](screenshots/01-studio-desktop.png) | ![Live CLI](screenshots/02-live-cli.png) |
-| ![Completed report](screenshots/03-completed-report.png) | ![JSON artifact](screenshots/04-json-proof.png) |
-| ![CLI trace](screenshots/05-trace.png) | ![Mobile view](screenshots/06-mobile.png) |
+| **Drag** | Orbit the graph in 3D |
+| **Scroll** (Shift+scroll on desktop) | Zoom in and out |
+| **Click a node** | Opens the Node Inspector — shows the page title, URL, depth, word count, and a link to the original source |
+| **2D / 3D toggle** | Flatten the graph to a top-down layout |
+| **Reset** | Restores the default rotation and zoom |
+
+### How it is built
+
+After a crawl completes, `app/crawler.py` writes a `graph` object into the JSON artifact:
+
+```json
+{
+  "graph": {
+    "nodes": [
+      {"id": "...", "url": "https://example.com", "title": "Example", "status": "crawled", "depth": 0},
+      {"id": "...", "url": "https://example.com/about", "title": "About", "status": "crawled", "depth": 1}
+    ],
+    "edges": [
+      {"source": "...", "target": "..."}
+    ]
+  }
+}
+```
+
+The frontend reads this graph, distributes nodes across a 3D sphere using a Fibonacci lattice, then renders them with a depth-projection Canvas engine (`Scene3D` class in `web/app.js`) — no WebGL, no external 3D library. Rotation, zoom, pointer picking and node selection are all handled with plain 2D Canvas math.
+
+After a completed crawl, open the **3D Atlas** tab inside the task card to explore it. On mobile the adjacent page list stays usable alongside the graph.
 
 ---
 
-## 8. Project Structure
+## 10. Project Structure
 
 ```
 Sift_Orbit/
 ├── app/
 │   ├── main.py        FastAPI endpoints, intent router, subprocess orchestration
-│   ├── crawler.py     Standalone CLI tool — JSONL stdout + JSON artifact output
+│   ├── crawler.py     Standalone CLI tool — JSONL stdout + JSON artifact + graph output
 │   ├── security.py    URL/DNS validation, SSRF protection, same-host guard
 │   ├── analysis.py    Extractive summary, keyword extraction, page quality checks
 │   ├── database.py    SQLite persistence (sessions, messages, tasks, logs)
@@ -301,12 +342,12 @@ Sift_Orbit/
 │   ├── planner.py     Deterministic constrained intent planner
 │   └── schemas.py     Pydantic models for validated CLI artifacts
 ├── web/
-│   ├── index.html     Responsive chat UI + 3D scene
+│   ├── index.html     Responsive chat UI + 3D orbital scene
 │   ├── styles.css     Layout, 3D transforms, mobile breakpoints
-│   └── app.js         UI logic, polling, tabs, 3D atlas, artifacts
+│   └── app.js         UI logic, polling, tabs, 3D Crawl Atlas, CLI replay
 ├── demo_site/         Four-page static site for local HTTP demo
 ├── tests/             Pytest suite (unit + integration + end-to-end)
-├── screenshots/       Evidence screenshots
+├── screenshots/       Evidence screenshots (07–13 are latest Orbit UI)
 ├── data/results/      Runtime JSON artifacts (created on first run)
 ├── .env.example       Environment variable template
 ├── requirements.txt   Runtime dependencies
@@ -317,17 +358,17 @@ Sift_Orbit/
 
 ---
 
-## 9. Architecture Overview
+## 11. Architecture Overview
 
 ```
 Browser / Chat UI
     │
     │  POST /api/plan        ← read-only: build + validate intent, no CLI yet
-    │  POST /api/execute     ← user explicitly confirms permission
+    │  POST /api/execute     ← user explicitly confirms crawl permission
     ▼
 FastAPI (app/main.py)
     │── validate URL (SSRF / DNS / scheme / port checks)
-    │── create task record in SQLite (status: queued)
+    │── create task in SQLite (status: queued)
     │
     │  asyncio.to_thread → subprocess.Popen (shell=False)
     │    sys.executable, '-m', 'app.crawler',
@@ -338,6 +379,7 @@ app.crawler (separate process)
     │── HTTPX requests + BeautifulSoup HTML parsing
     │── bounded traversal (max 15 pages, depth 2, 2 MB/page, 12 s/page)
     │── emit JSONL progress events → stdout
+    │── build URL graph (nodes + edges) from discovered links
     └── write validated JSON artifact → data/results/<task_id>.json
     ▼
 FastAPI (validation)
@@ -346,32 +388,32 @@ FastAPI (validation)
     │── persist to SQLite (status: completed / partial / failed)
     ▼
 Browser / Results
-    │── poll GET /api/tasks/{id}  while running
-    │── display Overview · Sources · JSON · Quality · Plan · Trace tabs
-    └── GET /api/tasks/{id}/download   (JSON artifact)
+    │── poll GET /api/tasks/{id} while running
+    │── Overview · Extraction · 3D Atlas · Evidence Lens · Pages · JSON · Quality · CLI Replay
+    └── GET /api/tasks/{id}/download  (JSON artifact)
 ```
 
 User input **never reaches `shell=True`**. The only executable the backend can launch is `sys.executable -m app.crawler` with a typed, allow-listed argument set.
 
 ---
 
-## 10. Security Notes
+## 12. Security Notes
 
-- Only `http://` and `https://` URLs; no credentials, arbitrary schemes, or file paths.
-- Loopback, private, reserved, and cloud-metadata addresses are blocked by default (DNS-resolved).
-- Unusual ports are blocked; loopback testing requires the explicit `ALLOW_PRIVATE_NETWORK=true` flag.
-- Same-host traversal only; external redirects are refused. `robots.txt` is checked conservatively.
+- Only `http://` and `https://` URLs — no credentials, arbitrary schemes, or file paths.
+- Loopback, private, reserved, and cloud-metadata addresses blocked by default (DNS-resolved).
+- Unusual ports blocked; loopback testing requires the explicit `ALLOW_PRIVATE_NETWORK=true` flag.
+- Same-host traversal only; external redirects refused. `robots.txt` checked conservatively.
 - Hard limits: 15 pages, depth 2, 2 MB/page, 12 s/page timeout, 150 s total job timeout.
-- Maximum 2 concurrent workers (configurable 1–5); cancellation and restart recovery are implemented.
-- Result artifacts are written only within `data/results/`; path traversal is checked on every read.
-- The UI escapes all untrusted website text before DOM insertion.
+- Max 2 concurrent workers (configurable 1–5); cancellation and restart recovery implemented.
+- Result artifacts written only within `data/results/`; path traversal checked on every read.
+- UI escapes all untrusted website text before DOM insertion.
 
-> ⚠️ **Not a hardened multi-tenant service.** There is no authentication, rate limiting, or OS-level process sandbox. For any public deployment, add those controls and run the worker in an isolated, non-privileged container.
+> ⚠️ **Not a hardened multi-tenant service.** No authentication, rate limiting, or OS-level process sandbox. For any public deployment, add those controls and run the worker in an isolated, non-privileged container.
 
 ---
 
 ## AI & External Service Disclosure
 
-This project was developed with AI coding assistance (OpenAI ChatGPT) for implementation and documentation. Runtime stack: Python, FastAPI, Uvicorn, HTTPX, BeautifulSoup4, SQLite, and vanilla HTML/CSS/JavaScript. The initial crawl and summary are deterministic; no external LLM is required at runtime. Optional OpenAI-compatible follow-up Q&A is user-configured.
+This project was developed with AI coding assistance (OpenAI ChatGPT) for implementation and documentation. Runtime stack: Python, FastAPI, Uvicorn, HTTPX, BeautifulSoup4, SQLite, and vanilla HTML/CSS/JavaScript. The core crawl and summary are deterministic — no external LLM is required at runtime.
 
 **BuildSprint Round 2 deadline: 16 November 2026, 11:59 PM IST.**
