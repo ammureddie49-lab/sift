@@ -408,12 +408,4 @@ User input **never reaches `shell=True`**. The only executable the backend can l
 - Result artifacts written only within `data/results/`; path traversal checked on every read.
 - UI escapes all untrusted website text before DOM insertion.
 
-> ⚠️ **Not a hardened multi-tenant service.** No authentication, rate limiting, or OS-level process sandbox. For any public deployment, add those controls and run the worker in an isolated, non-privileged container.
 
----
-
-## AI & External Service Disclosure
-
-This project was developed with AI coding assistance (OpenAI ChatGPT) for implementation and documentation. Runtime stack: Python, FastAPI, Uvicorn, HTTPX, BeautifulSoup4, SQLite, and vanilla HTML/CSS/JavaScript. The core crawl and summary are deterministic — no external LLM is required at runtime.
-
-**BuildSprint Round 2 deadline: 16 November 2026, 11:59 PM IST.**
