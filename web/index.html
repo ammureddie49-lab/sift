@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0b1020">
+<meta name="description" content="Sift Orbit is an evidence-first AI research studio: plan, execute real CLI crawls, explore a live 3D site atlas, and verify every source.">
+<title>SIFT ORBIT — Research with proof.</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css?v=4.2-scrollfix">
+</head><body>
+<svg aria-hidden="true" class="svg-bank" xmlns="http://www.w3.org/2000/svg">
+ <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-7-7 7 7-7 7"/></symbol>
+ <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+ <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-4 5-4 13 0 18m0-18c4 5 4 13 0 18"/></symbol>
+ <symbol id="i-orbit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><ellipse cx="12" cy="12" rx="11" ry="5" transform="rotate(-35 12 12)"/><circle cx="3.4" cy="16.7" r="1.3" fill="currentColor" stroke="none"/></symbol>
+ <symbol id="i-activity" viewBox="0 0 24 24"><path d="M2 12h4l3-7 5 14 3-7h5"/></symbol>
+ <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5"/></symbol>
+ <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 4 6v5c0 6 4 9 8 11 4-2 8-5 8-11V6z"/><path d="m8 12 3 3 5-6"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5 11-11"/></symbol>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></symbol>
+ <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+ <symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
+ <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4m-4 0h8"/></symbol>
+ <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></symbol>
+ <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v13m-5-5 5 5 5-5M4 18v3h16v-3"/></symbol>
+ <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+ <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z"/></symbol>
+ <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+ <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 11a8 8 0 1 1 2 6M4 4v7h7"/></symbol>
+ <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 6h16M9 6V3h6v3m3 0-1 15H7L6 6m4 4v8m4-8v8"/></symbol>
+ <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+ <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4 10 14M20 14v6H4V4h6"/></symbol>
+</svg>
+<div class="shell" id="appShell">
+<aside class="sidebar" id="sidebar">
+ <div class="brand-top"><a href="/" class="brand" aria-label="Sift Orbit"><span class="brand-emblem">✳</span><span>SIFT<span class="brand-dot">.</span></span><sup>ORBIT</sup></a><button class="mobile-x" id="closeSidebar" aria-label="Close menu"><svg><use href="#i-close"/></svg></button><span class="brand-sub">THE RESEARCH INSTRUMENT</span></div>
+ <button id="newSession" class="sidebar-new"><svg><use href="#i-plus"/></svg> New investigation <kbd>⌘N</kbd></button>
+ <div class="sidebar-label">WORKSPACE</div>
+ <button id="homeNav" class="sidebar-link is-active"><svg><use href="#i-orbit"/></svg> Studio <span class="side-active-mark">●</span></button>
+ <button id="guideNav" class="sidebar-link"><svg><use href="#i-activity"/></svg> How it works</button>
+ <div class="sidebar-label space-label"><span>YOUR INVESTIGATIONS</span><span id="sessionCount">0</span></div>
+ <div id="sessionList" class="session-list" aria-label="Saved investigations"></div>
+ <p class="empty-sessions" id="emptySessions">Your first discovery is one prompt away.</p>
+ <div class="sidebar-spacer"></div>
+ <div class="sidebar-status"><div class="ring-live"></div><div><strong>LOCAL EXECUTION</strong><span>Approved Python CLI · real data</span></div></div>
+ <div class="sidebar-foot"><span>BUILT FOR BUILDSPRINT</span><span>2026 / 03</span></div>
+</aside>
+<main class="workspace">
+ <header class="header"><div class="header-left"><button id="menuToggle" class="mobile-menu" aria-label="Menu"><svg><use href="#i-menu"/></svg></button><span class="breadcrumb-root">YOUR SPACE</span><span class="breadcrumb-slash">/</span><strong id="workspaceTitle">New investigation</strong></div><div class="header-right"><span id="connectionState" class="connection"><b></b> Connecting</span><button id="backToTop" class="header-button back-to-top-control" type="button" hidden title="Back to the top of this conversation" aria-label="Scroll to top of research conversation">↑ TOP</button><button id="architectureBtn" class="header-button">THE ENGINE <svg><use href="#i-external"/></svg></button></div></header>
+ <div id="scrollSpace" class="scroll-space">
+  <section id="welcomeView" class="welcome">
+   <div class="hero" id="heroArea">
+    <div class="hero-left"><div class="eyebrow"><span class="eyebrow-dot"></span> THE NEXT GENERATION OF RESEARCH <span class="eyebrow-index">001/∞</span></div><h1>Don't just<br><span class="title-outline">ask.</span> <em>Execute.</em></h1><p class="hero-desc">An intelligent workspace that transforms your questions into <strong>real, verifiable work.</strong> Explore the web in three dimensions. Inspect every source. Trust the evidence.</p><div class="hero-actions"><button id="heroStart" class="hero-cta">Start investigating <svg><use href="#i-arrow"/></svg></button><span class="cta-aside"><span class="pulse-dot"></span> NO MAKE-BELIEVE RESULTS</span></div></div>
+    <div class="hero-right" id="hero3d" aria-label="Interactive 3D orbital illustration. Drag to rotate, Shift+scroll to zoom." role="img"><canvas id="heroCanvas"></canvas><div class="hero-grid-overlay"></div><div class="orbit-hud hud-top"><span class="hud-light"></span> SYSTEM / LIVE<span>◢◣◢◣</span></div><div class="orbit-hud hud-bottom">DRAG TO ORBIT <span>↔</span> SHIFT+SCROLL TO ZOOM</div><div class="orbital-annotation ann-one">[01] REQUEST</div><div class="orbital-annotation ann-two">[02] EXECUTION</div><div class="orbital-annotation ann-three">[03] EVIDENCE</div></div>
+    <div class="hero-bottom-number">SIFT / ORBIT <span>INTELLIGENCE OPERATING SYSTEM</span></div>
+   </div>
+   <div class="welcome-below"><div class="section-overline"><span>CHOOSE YOUR MISSION</span><span>TOOLS / 001 — 004</span></div><h2>What are we <em>uncovering?</em></h2>
+    <div class="template-grid">
+     <button class="template" data-template="explore"><span class="template-top"><span class="template-glyph">◎</span><span>01</span></span><strong>Deep-dive a website</strong><span>Turn an entire site into a source-backed research brief.</span><i>OPEN WORKFLOW ↗</i></button>
+     <button class="template" data-template="extract"><span class="template-top"><span class="template-glyph">{ }</span><span>02</span></span><strong>Extract structured data</strong><span>Choose fields. Retrieve exact values and their evidence.</span><i>OPEN WORKFLOW ↗</i></button>
+     <button class="template" data-template="compare"><span class="template-top"><span class="template-glyph">◈</span><span>03</span></span><strong>Compare two websites</strong><span>Independent CLI runs, one evidence-first comparison.</span><i>OPEN WORKFLOW ↗</i></button>
+     <button class="template" data-template="seo"><span class="template-top"><span class="template-glyph">⌁</span><span>04</span></span><strong>Inspect website quality</strong><span>Audit HTML signals, headings and source integrity.</span><i>OPEN WORKFLOW ↗</i></button>
+    </div>
+    <div class="protocol-strip"><span>THE PROTOCOL</span><div><b>01</b> INTERPRET <i>→</i> <b>02</b> APPROVE <i>→</i> <b>03</b> EXECUTE <i>→</i> <b>04</b> VERIFY</div><small>NO RAW SHELL COMMANDS. EVER.</small></div>
+   </div>
+  </section>
+  <section id="chatView" class="chat-view" hidden><div class="chat-head"><div><span class="section-overline">RESEARCH / ACTIVE INVESTIGATION</span><h1>Proof, not <em>promises.</em></h1><p>Source-backed intelligence with a real execution trail.</p></div><button id="printReport" class="utility-button">↗ PRINT REPORT</button></div><div id="latestRunBanner" class="latest-run-banner" hidden aria-live="polite"></div><div id="messages" class="messages"></div><div id="comparisonTray"></div></section>
+ </div>
+ <div class="compose-zone" id="composeZone"><div class="composer-hint" id="toast" role="status" aria-live="polite"></div><form id="composeForm" class="composer"><div class="composer-leading">✳</div><label class="visually-hidden" for="messageInput">Describe a website task</label><textarea id="messageInput" rows="1" placeholder="Ask anything. Try: Crawl https://example.com, extract products and give me JSON..." maxlength="4000"></textarea><button id="voiceBtn" type="button" title="Speak request (when supported)" aria-label="Voice input"><svg><use href="#i-mic"/></svg></button><button id="sendBtn" type="submit" aria-label="Prepare execution plan"><svg><use href="#i-arrow"/></svg></button></form><div class="compose-meta"><span><b>↵</b> TO PREVIEW PLAN · <b>SHIFT ↵</b> NEW LINE</span><div><label for="pageLimit">MAX PAGES <select id="pageLimit"><option value="3">03</option><option value="6" selected>06</option><option value="10">10</option><option value="15">15</option></select></label><span class="compose-safe"><svg><use href="#i-shield"/></svg> BOUNDED & REVIEWABLE</span></div></div></div>
+</main>
+<aside class="inspector" id="inspector"><div class="inspect-top"><span class="section-overline">TELEMETRY / REAL-TIME</span><h2>Execution <span>feed.</span></h2><p>Every action leaves evidence. No simulated logs.</p></div><div class="run-status-card"><div class="run-card-head"><span>WORKER STATUS</span><span id="workerStatus" class="worker-idle"><i></i> IDLE</span></div><div class="worker-identity"><span class="terminal-sign">&gt;_</span><div><strong>Approved crawler</strong><small>Python subprocess · PID managed</small></div></div><div class="run-stats"><div><span>EXECUTION</span><b>LOCAL CLI</b></div><div><span>DATA SOURCE</span><b>LIVE HTML</b></div></div></div>
+ <div class="pipeline-area"><div class="panel-label"><span>EXECUTION STAGES</span><span>05 STEPS</span></div><div id="stageList" class="steps"><div class="stage-item"><span>01</span><div><strong>Understand</strong><small>Parse intent & allowed fields</small></div></div><div class="stage-item"><span>02</span><div><strong>Authorize</strong><small>Consent & URL safety</small></div></div><div class="stage-item"><span>03</span><div><strong>Execute</strong><small>Invoke approved CLI</small></div></div><div class="stage-item"><span>04</span><div><strong>Verify</strong><small>Validate evidence & JSON</small></div></div><div class="stage-item"><span>05</span><div><strong>Deliver</strong><small>Present real results</small></div></div></div></div>
+ <div class="terminal-panel"><div class="terminal-head"><span>LIVE STDOUT</span><span id="lastRunShort">—</span></div><div class="terminal-body" id="activityLog"><div class="terminal-empty"><span>▂▃▅▆▇</span><strong>AWAITING INSTRUCTION</strong><p>Your subprocess activity appears here when a task begins.</p></div></div></div><div class="inspect-footer"><span class="spark-small">✳</span><p><b>RESEARCH WITH RECEIPTS.</b> Actual pages, verifiable links, readable CLI traces and honest errors.</p></div>
+</aside>
+</div>
+<div id="modalBackdrop" class="modal-backdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-header"><div><span id="modalEyebrow" class="section-overline">PLAN / REVIEW</span><h2 id="modalTitle">Approve your mission.</h2></div><button id="closeModal" class="close-modal" aria-label="Close"><svg><use href="#i-close"/></svg></button></div><div id="modalBody" class="modal-body"></div></section></div>
+<script src="/app.js?v=4.2-scrollfix" defer></script></body></html>
