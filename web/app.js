@@ -20,7 +20,8 @@ function setBusy(x){state.busy=x;$('sendBtn').disabled=x;$('messageInput').disab
 function scrollBottom(force=true){
  const el=$('scrollSpace');if(!el)return;
  if(!force && el.scrollHeight-el.clientHeight-el.scrollTop>160)return;
- requestAnimationFrame(()=>el.scrollTo({top:el.scrollHeight,behavior:'auto'}));
+ // Use instant scroll — CSS smooth on this container caused the stuck-at-bottom bug.
+ el.scrollTop=el.scrollHeight;
 }
 function updateBackToTop(){
  const el=$('scrollSpace'),b=$('backToTop');if(b&&el)b.hidden=el.scrollTop<160;
@@ -60,7 +61,7 @@ function sessionsUI(){$('sessionCount').textContent=state.sessions.length;$('emp
 async function getSessions(){state.sessions=(await api('/api/sessions')).sessions;sessionsUI()}
 function resetHome(){if(state.poll)clearInterval(state.poll);state.poll=null;state.session=null;state.messages=[];localStorage.removeItem('sift-orbit-session');sessionsUI();render();$('scrollSpace').scrollTop=0;updateBackToTop();$('sidebar').classList.remove('open')}
 async function newSession(){const s=await api('/api/sessions',{method:'POST',body:JSON.stringify({title:'New investigation'})});state.session=s.id;state.messages=[];localStorage.setItem('sift-orbit-session',s.id);await getSessions();render();return s.id}
-async function activate(sid){const obj=await api('/api/sessions/'+encodeURIComponent(sid));state.session=sid;state.messages=obj.messages;localStorage.setItem('sift-orbit-session',sid);await getSessions();await Promise.all(state.messages.filter(m=>m.task_id).map(m=>fetchTask(m.task_id,false)));render();startPolling();$('scrollSpace').scrollTo({top:0,behavior:'auto'});updateBackToTop();$('sidebar').classList.remove('open')}
+async function activate(sid){const obj=await api('/api/sessions/'+encodeURIComponent(sid));state.session=sid;state.messages=obj.messages;localStorage.setItem('sift-orbit-session',sid);await getSessions();await Promise.all(state.messages.filter(m=>m.task_id).map(m=>fetchTask(m.task_id,false)));render();startPolling();$('scrollSpace').scrollTop=0;updateBackToTop();$('sidebar').classList.remove('open')}
 async function fetchTask(id,refresh=true){try{const v=await api('/api/tasks/'+encodeURIComponent(id));const prev=state.tasks[id];state.tasks[id]=v;const changed=!prev||prev.status!==v.status||prev.progress!==v.progress||prev.logs?.length!==v.logs?.length;if(refresh&&changed){const el=$('task-'+id);if(el)el.outerHTML=renderTask(v);else render();updateLatestRunBanner();updateInspector();mountGraphs();findComparePairs();}return v}catch{return null}}
 function startPolling(){if(state.poll)clearInterval(state.poll);state.poll=null;const ids=state.messages.filter(x=>x.task_id).map(x=>x.task_id);if(!ids.some(id=>!state.tasks[id]||active(state.tasks[id].status)))return;let locking=false;state.poll=setInterval(async()=>{if(locking)return;locking=true;try{await Promise.all(ids.filter(id=>!state.tasks[id]||active(state.tasks[id].status)).map(id=>fetchTask(id)));if(ids.every(id=>state.tasks[id]&&!active(state.tasks[id].status))){clearInterval(state.poll);state.poll=null;findComparePairs()}}finally{locking=false}},1000)}
 function latestRun(){const runs=state.messages.filter(m=>m.kind==='task'&&state.tasks[m.task_id]);return runs.length?state.tasks[runs[runs.length-1].task_id]:null}
